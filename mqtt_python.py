@@ -16,7 +16,6 @@ def on_subscribe(client, obj, mid, granted_qos):
     
 def listen(client):
     client.subscribe("directions")
-    client.subscribe("temp")
     client.loop_forever()
 
 def publish(client,temp=None,humidity=None,obstacle=None):
