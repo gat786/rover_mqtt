@@ -28,11 +28,11 @@ def publish(client,temp=None,humidity=None,obstacle=None):
         if(humidity!=None):
             client.publish("humidity",payload=humidity,qos=1)
         else:
-            client.publish("temp",payload=random.randint(1,100),qos=1)
+            client.publish("humidity",payload=random.randint(1,100),qos=1)
         if(obstacle!=None):
             client.publish("obstacle",payload=obstacle,qos=1)
         else:
-            client.publish("temp",payload="True",qos=1)
+            client.publish("obstacle",payload="True",qos=1)
         print("published the data")
         time.sleep(3)
 
