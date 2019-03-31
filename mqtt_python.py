@@ -1,12 +1,19 @@
 import paho.mqtt.client as paho
 import threading
 import time
+import serial
+ser = serial.Serial('/dev/ttyACM0')
 
 def on_connect(client, userdata, flags, rc):
     print("connected: ", str(rc))
 
 def on_message(client, obj, msg):
-    print(" recieved " , str(msg.qos) ," " , str(msg.payload,encoding="utf-8"))
+    message = str(msg.payload,encoding="utf-8")
+    print(" recieved " , str(msg.qos) ," " , message)
+    if(message=="forward"):
+        ser.write(b'1')
+    elif(message=="backward"):
+        ser.write(b'2')
 
 def on_publish(client, obj, mid):
     print("mid: " + str(mid))
