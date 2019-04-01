@@ -25,4 +25,4 @@ if __name__ == "__main__":
 	# Set GPIO sensor is connected to
 	gpio=17
 
-	print(getHumidAndTemp(sensor,gpio))
+	getHumidAndTemp(sensor,gpio)
