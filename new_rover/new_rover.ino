@@ -3,7 +3,7 @@ const int Negative=12;
 
 int const Trigpin = 10;
 int const Echopin = 9;
-int const Buzzhopin = 2;
+int const Buzzpin = 2;
 
 void setup() {
   Serial.begin(9600);
@@ -15,25 +15,10 @@ void setup() {
   pinMode(Buzzpin,OUTPUT);
 }
 
+int recieved=0;
+
 void loop() {
-  int recieved=0;
   buzzer();
-  // put your main code here, to run repeatedly:
-  while(Serial.available()>0){
-    recieved = Serial.read();
-    Serial.write(recieved);
-    switch(recieved){
-      case '1':
-        getAhead();
-        break;
-      case '2':
-        getBack();
-        break;
-      default:{
-        break;
-      }
-    }
-  }
 }
 
 void getAhead(){
@@ -81,12 +66,29 @@ void buzzer()
   if (distance <= 50 && distance >= 0) {
     // Buzz
     digitalWrite(Buzzpin, LOW);
+    Serial.write("Danger");
     moveBackward();
     delay(50);
   } 
   else 
   {
+    stopMoving();
     // Don't buzz
+    while(Serial.available()>0){
+      recieved = Serial.read();
+      Serial.write(recieved);
+      switch(recieved){
+        case '1':
+          getAhead();
+          break;
+        case '2':
+          getBack();
+          break;
+        default:{
+          break;
+        }
+      }
+    }
     digitalWrite(Buzzpin, HIGH);
   }
     // Waiting 60 ms won't hurt any one
