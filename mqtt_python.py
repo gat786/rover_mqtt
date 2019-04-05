@@ -2,7 +2,7 @@ import paho.mqtt.client as paho
 import threading
 import time
 import serial
-ser = serial.Serial('/dev/ttyACM0')
+ser = serial.Serial('COM3')
 
 def on_connect(client, userdata, flags, rc):
     print("connected: ", str(rc))
@@ -25,23 +25,35 @@ def listen(client):
     client.subscribe("directions")
     client.loop_forever()
 
+def danger_publish(message):
+    client.publish("obstacle",payload=message)
+
+def read_serial(port,mclient):
+    while True:
+        if port.inWaiting()>0:
+            print(port.readline())
+            publish(mclient,obstacle="yes")
+
+def pub_temp_humidity(publisher):
+    import dh11
+    result = dh11.getHumidAndTemp()
+    if result['result']=="success":
+        publish(publisher,temp=result['temp'],humidity=result['humidity'])
+    else:
+        print("Failed getting temperature and humidity")
+    time.sleep(10)
+
+
 def publish(client,temp=None,humidity=None,obstacle=None):
     import random
     while True:
         if(temp!=None):
             client.publish("temp",payload=temp,qos=1)
-        else:
-            client.publish("temp",payload=random.randint(1,10),qos=1)
         if(humidity!=None):
             client.publish("humidity",payload=humidity,qos=1)
-        else:
-            client.publish("humidity",payload=random.randint(1,100),qos=1)
         if(obstacle!=None):
             client.publish("obstacle",payload=obstacle,qos=1)
-        else:
-            client.publish("obstacle",payload="True",qos=1)
         print("published the data")
-        time.sleep(3)
 
 def registerFunstions(client):
     client.on_connect = on_connect
@@ -60,7 +72,9 @@ if __name__ == '__main__':
     publisher.connect("127.0.0.1",1883)
     
     t1  = threading.Thread(target=listen,args=(client,))
-    t2 = threading.Thread(target=publish,args=(publisher,),kwargs={"temp":32})
+    t2 = threading.Thread(target=read_serial,args=(ser,publisher,))
+    t3 = threading.Thread(target=pub_temp_humidity,args=(publisher,))
     t1.start()
     time.sleep(1)
     t2.start()
+    t3.start()
