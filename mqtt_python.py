@@ -42,7 +42,7 @@ def read_serial(port,mclient):
     while True:
         try:
             if port.inWaiting()>0:
-                if port.readline()==danger_yes:
+                if port.readline().decode('utf-8')==danger_yes:
                     danger_publish("YES") 
                     time.sleep(0.3)
                 print(port.readline())
