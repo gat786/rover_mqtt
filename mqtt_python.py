@@ -2,7 +2,7 @@ import paho.mqtt.client as paho
 import threading
 import time
 import serial
-ser = serial.Serial('COM3')
+ser = serial.Serial('/dev/ttyACM0')
 
 def on_connect(client, userdata, flags, rc):
     print("connected: ", str(rc))
