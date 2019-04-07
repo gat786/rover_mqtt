@@ -34,26 +34,6 @@ def read_serial(port,mclient):
             print(port.readline())
             publish(mclient,obstacle="yes")
 
-def pub_temp_humidity(publisher):
-    import dh11
-    result = dh11.getHumidAndTemp()
-    if result['result']=="success":
-        publish(publisher,temp=result['temp'],humidity=result['humidity'])
-    else:
-        print("Failed getting temperature and humidity")
-    time.sleep(10)
-
-
-def publish(client,temp=None,humidity=None,obstacle=None):
-    import random
-    while True:
-        if(temp!=None):
-            client.publish("temp",payload=temp,qos=1)
-        if(humidity!=None):
-            client.publish("humidity",payload=humidity,qos=1)
-        if(obstacle!=None):
-            client.publish("obstacle",payload=obstacle,qos=1)
-        print("published the data")
 
 def registerFunstions(client):
     client.on_connect = on_connect
@@ -73,7 +53,6 @@ if __name__ == '__main__':
     
     t1  = threading.Thread(target=listen,args=(client,))
     t2 = threading.Thread(target=read_serial,args=(ser,publisher,))
-    t3 = threading.Thread(target=pub_temp_humidity,args=(publisher,))
     t1.start()
     time.sleep(1)
     t2.start()
