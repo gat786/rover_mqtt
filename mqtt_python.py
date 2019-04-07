@@ -31,7 +31,8 @@ def danger_publish(message):
 def read_serial(port,mclient):
     while True:
         if port.inWaiting()>0:
-            print(port.readline())
+            line = port.readline().decode('utf-8')
+            print(line)
             
 
 def publish(client,temp=None,humidity=None,obstacle=None):
