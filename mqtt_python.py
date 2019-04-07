@@ -28,11 +28,17 @@ def listen(client):
 def danger_publish(message):
     client.publish("obstacle",payload=message)
 
+danger_yes = "yes \n"
+danger_no = "no \n"
+
 def read_serial(port,mclient):
     while True:
         if port.inWaiting()>0:
             line = port.readline().decode('utf-8')
-            print(line)
+            if line==danger_yes:
+                danger_publish("yes")
+            elif line==danger_no:
+                danger_publish("no")
             
 
 def publish(client,temp=None,humidity=None,obstacle=None):
