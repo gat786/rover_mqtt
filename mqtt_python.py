@@ -45,6 +45,7 @@ def read_serial(port,mclient):
                 danger_publish("YES")
             else:
                 danger_publish("No")
+                time.sleep(0.3)
         except OSError:
             print('error occured')
 
