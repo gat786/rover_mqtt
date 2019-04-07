@@ -5,7 +5,7 @@ import serial
 import serial.tools.list_ports as ports 
 
 
-ser = serial.Serial('/dev/ttyACM0')
+ser = ''
 
 for usb in ports.comports():
     if usb.serial_number == '55730303037351D05242':
@@ -40,13 +40,15 @@ danger_no = "no \n"
 
 def read_serial(port,mclient):
     while True:
-        if port.inWaiting()>0:
-            line = port.readline().decode('utf-8')
-            if line==danger_yes:
-                danger_publish("YES")
-            elif line==danger_no:
-                danger_publish("NO")
-            
+        try:
+            if port.inWaiting()>0:
+                line = port.readline().decode('utf-8')
+                if line==danger_yes:
+                    danger_publish("YES")
+                elif line==danger_no:
+                    danger_publish("NO")
+        except OSError:
+            print('error occured')
 
 def publish(client,temp=None,humidity=None,obstacle=None):
     import random
