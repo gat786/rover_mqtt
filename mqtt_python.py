@@ -36,9 +36,9 @@ def read_serial(port,mclient):
         if port.inWaiting()>0:
             line = port.readline().decode('utf-8')
             if line==danger_yes:
-                danger_publish("yes".encode('utf-8'))
+                danger_publish("YES")
             elif line==danger_no:
-                danger_publish("no".encode('utf-8'))
+                danger_publish("NO")
             
 
 def publish(client,temp=None,humidity=None,obstacle=None):
