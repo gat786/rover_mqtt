@@ -12,7 +12,7 @@ for usb in ports.comports():
         ser = serial.Serial(usb.device)
 
 def on_connect(client, userdata, flags, rc):
-    print("connected: ", str(client))
+    print("connected: ", str(client.client_id))
 
 def on_message(client, obj, msg):
     message = str(msg.payload,encoding="utf-8")
