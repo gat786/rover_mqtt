@@ -2,7 +2,14 @@ import paho.mqtt.client as paho
 import threading
 import time
 import serial
+import serial.tools.list_ports as ports 
+
+
 ser = serial.Serial('/dev/ttyACM0')
+
+for usb in ports.comports():
+    if usb.serial_number == '55730303037351D05242':
+        ser = serial.Serial(usb.device)
 
 def on_connect(client, userdata, flags, rc):
     print("connected: ", str(rc))
