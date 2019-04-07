@@ -41,9 +41,11 @@ danger_no = "no \n"
 def read_serial(port,mclient):
     while True:
         try:
-            if port.inWaiting()>0 and port.readline()==danger_yes:
-                danger_publish("YES") 
-                print()
+            if port.inWaiting()>0:
+                if port.readline()==danger_yes:
+                    danger_publish("YES") 
+                    time.sleep(0.3)
+                print(port.readline())
             else:
                 danger_publish("No")
                 time.sleep(0.3)
