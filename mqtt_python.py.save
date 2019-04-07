@@ -42,13 +42,11 @@ def read_serial(port,mclient):
     while True:
         try:
             if port.inWaiting()>0:
-                danger_publish("YES") 
-                print(port.readline())
+                danger_publish("YES")
             else:
                 danger_publish("No")
-                time.sleep(0.3)
         except OSError:
-            print('error occured')
+            print('error occured'))
 
 def publish(client,temp=None,humidity=None,obstacle=None):
     import random

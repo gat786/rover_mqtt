@@ -93,7 +93,7 @@ void buzzer()
   else 
   {
     stopMoving();
-    Serial.write("no \n");
+
     // Don't buzz
     while(Serial.available()>0){
       recieved = Serial.read();
