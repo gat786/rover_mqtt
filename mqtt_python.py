@@ -81,4 +81,3 @@ if __name__ == '__main__':
     t1.start()
     time.sleep(1)
     t2.start()
-    t3.start()
