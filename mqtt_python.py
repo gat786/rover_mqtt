@@ -32,7 +32,18 @@ def read_serial(port,mclient):
     while True:
         if port.inWaiting()>0:
             print(port.readline())
-            publish(mclient,obstacle="yes")
+            
+
+def publish(client,temp=None,humidity=None,obstacle=None):
+    import random
+    while True:
+        if(temp!=None):
+            client.publish("temp",payload=temp,qos=1)
+        if(humidity!=None):
+            client.publish("humidity",payload=humidity,qos=1)
+        if(obstacle!=None):
+            client.publish("obstacle",payload=obstacle,qos=1)
+        print("published the data")
 
 
 def registerFunstions(client):
